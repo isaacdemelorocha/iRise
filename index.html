@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jsPDF library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Página Interativa com Quiz</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
+  <style>
+    body {
+      background-color: #f0fbff;
+      font-family: 'Arial', sans-serif;
+    }
+    #sidebar {
+  position: fixed;
+  top: 10px; /* pequena margem no topo */
+  left: 10px; /* pequena margem à esquerda */
+  height: calc(100% - 20px); /* ajusta a altura para considerar a margem */
+  width: 250px;
+  background-color: #ff3300;    
+  padding-top: 20px;
+  color: white;
+  transition: all 0.3s ease;
+  border-radius: 10px; /* deixa o sidebar arredondado */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* opcional: sombra para dar destaque */
+}
+
+
+    #sidebar a {
+      color: white;
+      text-decoration: none;
+      padding: 10px 15px;
+      display: block;
+      margin: 10px 0;
+      border-radius: 5px;
+    }
+
+    #sidebar a:hover {
+      background-color: #495057;
+    }
+
+    .content {
+      margin-left: 260px;
+      padding: 20px;
+      transition: margin-left 0.3s ease;
+    }
+
+    .box {
+      background-color: white;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    header {
+      background-color: #343a40;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .quiz-button {
+      background-color: #343a40;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .quiz-button:hover {
+      background-color: #495057;
+    }
+
+    .result {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .form-check {
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 768px) {
+      #sidebar {
+        width: 0;
+        overflow-x: hidden;
+      }
+
+      .content {
+        margin-left: 0;
+      }
+
+      #sidebar.show {
+        width: 250px;
+      }
+
+      .menu-toggle {
+        display: block;
+        background-color: #343a40;
+        color: white;
+        padding: 10px;
+        border: none;
+        width: 100%;
+      }
+    }
+
+    .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* Proporção de 16:9 */
+            height: 0;
+            overflow: hidden;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        #video.box {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div id="sidebar">
+    <h2 class="text-center text-white"></h2>
+    <a href="#text1">Introdução</a>
+    <a href="#video">Vídeo</a>
+    <a href="#text2">Explicação</a>
+    <a href="#image">Imagem</a>
+    <a href="#quiz">Quiz Introdução</a>
+    <a href="#case-study-quiz">Quiz Gestão de Projetos</a>
+    <a href="#text3">Material de Apoio</a>
+  </div>
+
+  <!-- Conteúdo Principal -->
+  <div class="content">
+    <button class="menu-toggle d-block d-md-none" onclick="toggleSidebar()">Menu</button>
+
+    <div id="text1" class="box">
+      <h2>Introdução</h2>
+      <p>Este é um curso introdutório sobre o tema X. Aqui, você aprenderá os conceitos básicos e práticas importantes.</p>
+    </div>
+
+    <div id="video" class="box">
+      <h2></h2>
+      <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/8DkMjJYF644?si=ITnvePBC3l01R_Da"
+                title="YouTube video player"
+                allowfullscreen></iframe>
+    </div>
+    </div>
+<br>
+    <div id="text2" class="box">
+        <h2>Explicação</h2>
+        <p>Este é um curso introdutório sobre o tema X. Aqui, você aprenderá os conceitos básicos e práticas importantes.</p>
+      </div>
+
+    <div id="image" class="box">
+      <h2>Imagem Ilustrativa</h2>
+      <div class="image-container">
+        <img src="https://via.placeholder.com/500" alt="Imagem de exemplo"/>
+      </div>
+    </div>
+
+    <!-- Quiz Introdução -->
+    <div id="quiz" class="box">
+        <h2>Quiz 1</h2>
+        <form id="quiz-form">
+            <!-- Pergunta 1 -->
+            <div class="mb-3" id="q1">
+                <label>1. Qual é a capital do Brasil?</label><br>
+                <input type="radio" name="q1" value="A"> A) São Paulo<br>
+                <input type="radio" name="q1" value="B"> B) Rio de Janeiro<br>
+                <input type="radio" name="q1" value="C"> C) Brasília<br>
+            </div>
+
+            <!-- Pergunta 2 -->
+            <div class="mb-3" id="q2">
+                <label>2. Qual é a moeda dos Estados Unidos?</label><br>
+                <input type="radio" name="q2" value="A"> A) Euro<br>
+                <input type="radio" name="q2" value="B"> B) Dólar<br>
+                <input type="radio" name="q2" value="C"> C) Libra Esterlina<br>
+            </div>
+
+            <!-- Pergunta 3 -->
+            <div class="mb-3" id="q3">
+                <label>3. Quem foi o primeiro presidente do Brasil?</label><br>
+                <input type="radio" name="q3" value="A"> A) Getúlio Vargas<br>
+                <input type="radio" name="q3" value="B"> B) Juscelino Kubitschek<br>
+                <input type="radio" name="q3" value="C"> C) Marechal Deodoro da Fonseca<br>
+            </div>
+
+            <!-- Pergunta 4 -->
+            <div class="mb-3" id="q4">
+                <label>4. Qual é o maior planeta do Sistema Solar?</label><br>
+                <input type="radio" name="q4" value="A"> A) Saturno<br>
+                <input type="radio" name="q4" value="B"> B) Júpiter<br>
+                <input type="radio" name="q4" value="C"> C) Netuno<br>
+            </div>
+
+            <!-- Pergunta 5 -->
+            <div class="mb-3" id="q5">
+                <label>5. Quem pintou a Mona Lisa?</label><br>
+                <input type="radio" name="q5" value="A"> A) Picasso<br>
+                <input type="radio" name="q5" value="B"> B) Van Gogh<br>
+                <input type="radio" name="q5" value="C"> C) Leonardo Da Vinci<br>
+            </div>
+
+            <button type="button" class="btn btn-primary" onclick="checkAnswer()">Enviar Respostas</button>
+            <button type="button" class="btn btn-secondary" onclick="resetQuiz()">Reiniciar Quiz</button>
+            <p id="quiz-result" class="result mt-3"></p>
+        </form>
+
+        <!-- Exibição do Feedback -->
+        <p id="quiz-result" class="result mt-3"></p>
+    </div>
+
+    <!-- Novo Quiz: Gestão de Projetos -->
+    <div id="case-study-quiz" class="box">
+      <h2>Estudo de Caso: Gestão de Projetos</h2>
+      <form id="case-study-quiz-form">
+        <!-- Pergunta 1 -->
+        <div class="mb-3">
+          <p><strong>1. Sua equipe está atrasada na entrega de uma funcionalidade-chave. O cliente está insatisfeito e exige um prazo menor. Qual é a melhor abordagem?</strong></p>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="qu1" value="A" id="qu1a">
+            <label class="form-check-label" for="qu1a">Comprometer-se com o novo prazo, mesmo sabendo que será difícil, para manter a relação com o cliente e depois renegociar se necessário.</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="qu1" value="B" id="qu1b">
+            <label class="form-check-label" for="qu1b">Reunir-se com a equipe, reavaliar o cronograma e apresentar ao cliente um novo plano realista, explicando os impactos e propondo soluções colaborativas.</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="qu1" value="C" id="qu1c">
+            <label class="form-check-label" for="qu1c">Reduzir a qualidade da entrega para atender o novo prazo, entregando o que for possível mesmo que não atenda a todos os requisitos.</label>
+          </div>
+        </div>
+
+        <!-- Pergunta 2 -->
+        <div class="mb-3">
+          <p><strong>2. Um membro da sua equipe está constantemente atrasando entregas. O que você faz?</strong></p>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="qu2" value="A" id="qu2a">
+            <label class="form-check-label" for="qu2a">Espera que o membro da equipe melhore com o tempo e evita confrontos para manter o clima organizacional positivo.</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="qu2" value="B" id="qu2b">
+            <label class="form-check-label" for="qu2b">Conversa diretamente com o profissional, oferecendo apoio, identificando causas e propondo metas claras com acompanhamento.</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="qu2" value="C" id="qu2c">
+            <label class="form-check-label" for="qu2c">Repassa todas as tarefas dele para outros membros da equipe para garantir produtividade, mesmo sem avisá-lo diretamente.</label>
+          </div>
+        </div>
+
+        <!-- Pergunta 3 -->
+        <div class="mb-3">
+          <p><strong>3. Durante o projeto, surge uma oportunidade de implementar uma tecnologia nova e mais eficiente. O que você faz?</strong></p>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="qu3" value="A" id="qu3a">
+            <label class="form-check-label" for="qu3a">Implementa imediatamente a nova tecnologia, mesmo sem planejamento, para aproveitar a inovação antes que a concorrência o faça.</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="qu3" value="B" id="qu3b">
+            <label class="form-check-label" for="qu3b">Avalia o impacto da nova tecnologia no cronograma e orçamento, e discute com a equipe antes de tomar uma decisão.</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="q3" value="C" id="qu3c">
+            <label class="form-check-label" for="qu3c">Ignora a nova tecnologia para evitar complicações e manter o projeto no prazo original.</label>
+          </div>
+        </div>
+
+<!-- Pergunta 4 -->
+<div class="mb-3">
+    <p><strong>4. Um membro da sua equipe está constantemente atrasando entregas. O que você faz?</strong></p>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="qu4" value="A" id="qu4a">
+      <label class="form-check-label" for="qu4a">Espera que o membro da equipe melhore com o tempo e evita confrontos para manter o clima organizacional positivo.</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="qu4" value="B" id="qu4b">
+      <label class="form-check-label" for="qu4b">Conversa diretamente com o profissional, oferecendo apoio, identificando causas e propondo metas claras com acompanhamento.</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="qu4" value="C" id="qu4c">
+      <label class="form-check-label" for="qu4c">Repassa todas as tarefas dele para outros membros da equipe para garantir produtividade, mesmo sem avisá-lo diretamente.</label>
+    </div>
+  </div>
+
+
+  <!-- Pergunta 5 -->
+  <div class="mb-3">
+    <p><strong>5. Um membro da sua equipe está constantemente atrasando entregas. O que você faz?</strong></p>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="qu5" value="A" id="qu5a">
+      <label class="form-check-label" for="q5a">Espera que o membro da equipe melhore com o tempo e evita confrontos para manter o clima organizacional positivo.</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="qu5" value="B" id="qu5b">
+      <label class="form-check-label" for="qu5b">Conversa diretamente com o profissional, oferecendo apoio, identificando causas e propondo metas claras com acompanhamento.</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="qu5" value="C" id="qu5c">
+      <label class="form-check-label" for="qu5c">Repassa todas as tarefas dele para outros membros da equipe para garantir produtividade, mesmo sem avisá-lo diretamente.</label>
+    </div>
+  </div>
+
+        <button type="button" class="btn btn-primary" onclick="checkCaseStudyAnswer()">Enviar Respostas</button>
+        <button type="button" class="btn btn-secondary" onclick="resetCaseStudyQuiz()">Reiniciar Quiz</button>
+        <p id="case-study-quiz-result" class="result mt-3"></p>
+      </form>
+    </div>
+
+   
+    <div id="text3" class="box" style="margin: auto;">
+      <h2 class="mb-3 text-dark">Material de Apoio</h2>
+      <p class="mb-4 text-secondary fs-5">
+        Para finalizar o seu aprendizado, baixe o material de apoio que preparamos para você!
+      </p>
+      <a href="URL_DO_SEU_ARQUIVO.pdf" download="material-de-apoio.pdf" class="btn btn-success">
+        📄 Baixar Material de Apoio
+      </a>
+    </div>
+    <br>
+    <div id="encerramento" class="box">
+        <h2>Parabéns!</h2>
+        <p>Este é um curso introdutório sobre o tema X. Aqui, você aprenderá os conceitos básicos e práticas importantes.</p>
+      </div>
+      <br>
+      <div id="certificado" class="box">
+          <h2>Emitir certificado</h2>
+          <p class="">Preencha seu nome para emitir o certificado.</p>
+          <form id="certificadoForm">
+              <div class="mb-3">
+                  <label for="nome" class="form-label">Nome Completo:</label>
+                  <input type="text" class="form-control" id="nome" required>
+              </div>
+              <button type="submit" class="btn btn-success w-100">Emitir Certificado</button>
+          </form>
+        </div>
+</div>
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Funções do primeiro quiz (Introdução)
+    function checkAnswer() {
+            const answers = {
+                q1: 'C',
+                q2: 'B',
+                q3: 'C',
+                q4: 'B',
+                q5: 'C',
+            };
+
+            let score = 0;
+            let total = Object.keys(answers).length;
+            let feedback = '';
+
+            // Processar cada pergunta
+            for (let key in answers) {
+                const selected = document.querySelector(`input[name="${key}"]:checked`);
+                const correctAnswer = answers[key];
+                const question = document.querySelector(`#${key}`);
+
+                // Resetando borda e padding antes de exibir o resultado
+                question.style.border = 'none';
+                question.style.padding = '0';
+
+                if (selected) {
+                    if (selected.value === correctAnswer) {
+                        score++;
+                        feedback += `✅ Pergunta ${key.replace('q', '')} correta<br>`;
+                        question.style.border = '2px solid green';
+                        question.style.padding = '10px';
+                    } else {
+                        feedback += `❌ Pergunta ${key.replace('q', '')} incorreta<br>`;
+                        question.style.border = '2px solid red';
+                        question.style.padding = '10px';
+                    }
+                } else {
+                    feedback += `❌ Pergunta ${key.replace('q', '')} não respondida<br>`;
+                }
+            }
+
+            // Exibir o resultado final
+            const resultElement = document.getElementById('quiz-result');
+            resultElement.innerHTML = `Você acertou ${score} de ${total} perguntas.<br>${feedback}`;
+        }
+
+    function resetQuiz() {
+      document.getElementById('quiz-form').reset();
+      document.getElementById('quiz-result').innerHTML = '';
+      const questions = document.querySelectorAll('.mb-3');
+      questions.forEach(question => {
+        question.style.border = 'none';
+        question.style.padding = '0';
+      });
+    }
+
+    // Funções do segundo quiz (Gestão de Projetos)
+    function checkCaseStudyAnswer() {
+      const answers = {
+        qu1: 'B',
+        qu2: 'B',
+        qu3: 'B',
+        qu4: 'B',
+        qu5: 'B',
+      };
+
+      let score = 0;
+      let total = Object.keys(answers).length;
+      let feedback = '';
+
+      for (let key in answers) {
+        const selected = document.querySelector(`input[name="${key}"]:checked`);
+        const correctAnswer = answers[key];
+        const question = document.querySelector(`input[name="${key}"]`).closest('.mb-3');
+
+        question.style.border = 'none';
+        question.style.padding = '0';
+
+        if (selected) {
+          if (selected.value === correctAnswer) {
+            score++;
+            feedback += `✅ Pergunta ${key.replace('qu', '')} correta<br>`;
+            question.style.border = '2px solid green';
+            question.style.padding = '10px';
+          } else {
+            feedback += `❌ Pergunta ${key.replace('qu', '')} incorreta<br>`;
+            question.style.border = '2px solid red';
+            question.style.padding = '10px';
+          }
+        } else {
+          feedback += `❌ Pergunta ${key.replace('qu', '')} não respondida<br>`;
+        }
+      }
+
+      document.getElementById('case-study-quiz-result').innerHTML = `Você acertou ${score} de ${total} perguntas.<br>${feedback}`;
+    }
+
+    function resetCaseStudyQuiz() {
+      document.getElementById('case-study-quiz-form').reset();
+      document.getElementById('case-study-quiz-result').innerHTML = '';
+      const questions = document.querySelectorAll('.mb-3');
+      questions.forEach(question => {
+        question.style.border = 'none';
+        question.style.padding = '0';
+      });
+    }
+
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('show');
+    }
+
+// Quando o formulário for enviado, vamos gerar o PDF
+document.getElementById('certificadoForm').addEventListener('submit', function(e) {
+    e.preventDefault(); // Evita que o formulário recarregue a página
+
+    // Coleta o nome do usuário
+    var nome = document.getElementById('nome').value;
+
+    // Cria um novo documento PDF usando jsPDF
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF('landscape'); // Criando PDF em modo paisagem
+
+    // Caminho da imagem do certificado (certificado em branco em formato PNG)
+    const imagemCertificado = 'certificado.png';  // Substitua por seu caminho de imagem real
+
+    // Adicionando a imagem do certificado ao PDF
+    doc.addImage(imagemCertificado, 'PNG', 10, 10, 280, 200);  // Ajuste a posição e o tamanho conforme necessário
+
+    // Centralizando o nome do usuário
+    doc.setFontSize(30);
+    doc.text(nome, 150, 106, null, null, 'center'); // Nome do usuário centralizado no PDF
+
+    // Gerando o PDF como uma URL para abrir em uma nova aba
+    const pdfUrl = doc.output('bloburl'); // Cria uma URL para o PDF gerado
+
+    // Abrindo o PDF em uma nova aba
+    window.open(pdfUrl, '_blank');  // Abre o PDF em uma nova aba
+});
+
+  </script>
+</body>
+</html>
