@@ -1,144 +1,25 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- jsPDF library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Página Interativa com Quiz</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
 
-  <style>
-    body {
-      background-color: #f0fbff;
-      font-family: 'Arial', sans-serif;
-    }
-    #sidebar {
-  position: fixed;
-  top: 10px; /* pequena margem no topo */
-  left: 10px; /* pequena margem à esquerda */
-  height: calc(100% - 20px); /* ajusta a altura para considerar a margem */
-  width: 250px;
-  background-color: #ff3300;    
-  padding-top: 20px;
-  color: white;
-  transition: all 0.3s ease;
-  border-radius: 10px; /* deixa o sidebar arredondado */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* opcional: sombra para dar destaque */
-}
+  <!-- Estilos -->
+  <link rel="stylesheet" href="style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
+  <!-- Scripts externos -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-    #sidebar a {
-      color: white;
-      text-decoration: none;
-      padding: 10px 15px;
-      display: block;
-      margin: 10px 0;
-      border-radius: 5px;
-    }
-
-    #sidebar a:hover {
-      background-color: #495057;
-    }
-
-    .content {
-      margin-left: 260px;
-      padding: 20px;
-      transition: margin-left 0.3s ease;
-    }
-
-    .box {
-      background-color: white;
-      padding: 20px;
-      margin-bottom: 20px;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    header {
-      background-color: #343a40;
-      color: white;
-      padding: 20px;
-      text-align: center;
-    }
-
-    .quiz-button {
-      background-color: #343a40;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .quiz-button:hover {
-      background-color: #495057;
-    }
-
-    .result {
-      font-weight: bold;
-      margin-top: 10px;
-    }
-
-    .form-check {
-      margin-bottom: 10px;
-    }
-
-    @media (max-width: 768px) {
-      #sidebar {
-        width: 0;
-        overflow-x: hidden;
-      }
-
-      .content {
-        margin-left: 0;
-      }
-
-      #sidebar.show {
-        width: 250px;
-      }
-
-      .menu-toggle {
-        display: block;
-        background-color: #343a40;
-        color: white;
-        padding: 10px;
-        border: none;
-        width: 100%;
-      }
-    }
-
-    .video-container {
-            position: relative;
-            padding-bottom: 56.25%; /* Proporção de 16:9 */
-            height: 0;
-            overflow: hidden;
-        }
-
-        .video-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        #video.box {
-            max-width: 100%;
-            margin: 0 auto;
-            padding: 20px;
-            text-align: center;
-        }
-
-  </style>
+  <!-- Script local (colocado no final do <body> para melhor performance) -->
 </head>
-<body>
 
-  <!-- Sidebar -->
-  <div id="sidebar">
+<body class="geral">
+
+  <!-- SIDEBAR -->
+  <nav id="sidebar">
     <h2 class="text-center text-white"></h2>
     <a href="#text1">Introdução</a>
     <a href="#video">Vídeo</a>
@@ -147,11 +28,10 @@
     <a href="#quiz">Quiz Introdução</a>
     <a href="#case-study-quiz">Quiz Gestão de Projetos</a>
     <a href="#text3">Material de Apoio</a>
-  </div>
+  </nav>
 
   <!-- Conteúdo Principal -->
   <div class="content">
-    <button class="menu-toggle d-block d-md-none" onclick="toggleSidebar()">Menu</button>
 
     <div id="text1" class="box">
       <h2>Introdução</h2>
@@ -338,165 +218,37 @@
         📄 Baixar Material de Apoio
       </a>
     </div>
-    <br>
-    <div id="encerramento" class="box">
+<br>
+    <div id="encerramento" class="box" style="display: none;">
         <h2>Parabéns!</h2>
         <p>Este é um curso introdutório sobre o tema X. Aqui, você aprenderá os conceitos básicos e práticas importantes.</p>
       </div>
-      <br>
-      <div id="certificado" class="box">
-          <h2>Emitir certificado</h2>
-          <p class="">Preencha seu nome para emitir o certificado.</p>
-          <form id="certificadoForm">
-              <div class="mb-3">
-                  <label for="nome" class="form-label">Nome Completo:</label>
-                  <input type="text" class="form-control" id="nome" required>
-              </div>
-              <button type="submit" class="btn btn-success w-100">Emitir Certificado</button>
-          </form>
-        </div>
+<!-- Modal do Certificado -->
+<div class="modal fade" id="certificadoModal" tabindex="-1" aria-labelledby="certificadoModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="certificadoModalLabel">Emitir Certificado</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      
+      <div class="modal-body">
+        <p class="mb-3">Parabéns! Este é um curso introdutório sobre o tema X. Aqui, você aprenderá os conceitos básicos e práticas importantes.</p>
+        <br>
+        <p class="mb-3"></p>
+        <form id="certificadoForm">
+          <div class="mb-3">
+            <label for="nome" class="form-label">Preencha seu nome para emitir o certificado:</label>
+            <input type="text" class="form-control" id="nome" required>
+          </div>
+          <button type="submit" class="btn btn-success w-100">Emitir Certificado</button>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    // Funções do primeiro quiz (Introdução)
-    function checkAnswer() {
-            const answers = {
-                q1: 'C',
-                q2: 'B',
-                q3: 'C',
-                q4: 'B',
-                q5: 'C',
-            };
 
-            let score = 0;
-            let total = Object.keys(answers).length;
-            let feedback = '';
-
-            // Processar cada pergunta
-            for (let key in answers) {
-                const selected = document.querySelector(`input[name="${key}"]:checked`);
-                const correctAnswer = answers[key];
-                const question = document.querySelector(`#${key}`);
-
-                // Resetando borda e padding antes de exibir o resultado
-                question.style.border = 'none';
-                question.style.padding = '0';
-
-                if (selected) {
-                    if (selected.value === correctAnswer) {
-                        score++;
-                        feedback += `✅ Pergunta ${key.replace('q', '')} correta<br>`;
-                        question.style.border = '2px solid green';
-                        question.style.padding = '10px';
-                    } else {
-                        feedback += `❌ Pergunta ${key.replace('q', '')} incorreta<br>`;
-                        question.style.border = '2px solid red';
-                        question.style.padding = '10px';
-                    }
-                } else {
-                    feedback += `❌ Pergunta ${key.replace('q', '')} não respondida<br>`;
-                }
-            }
-
-            // Exibir o resultado final
-            const resultElement = document.getElementById('quiz-result');
-            resultElement.innerHTML = `Você acertou ${score} de ${total} perguntas.<br>${feedback}`;
-        }
-
-    function resetQuiz() {
-      document.getElementById('quiz-form').reset();
-      document.getElementById('quiz-result').innerHTML = '';
-      const questions = document.querySelectorAll('.mb-3');
-      questions.forEach(question => {
-        question.style.border = 'none';
-        question.style.padding = '0';
-      });
-    }
-
-    // Funções do segundo quiz (Gestão de Projetos)
-    function checkCaseStudyAnswer() {
-      const answers = {
-        qu1: 'B',
-        qu2: 'B',
-        qu3: 'B',
-        qu4: 'B',
-        qu5: 'B',
-      };
-
-      let score = 0;
-      let total = Object.keys(answers).length;
-      let feedback = '';
-
-      for (let key in answers) {
-        const selected = document.querySelector(`input[name="${key}"]:checked`);
-        const correctAnswer = answers[key];
-        const question = document.querySelector(`input[name="${key}"]`).closest('.mb-3');
-
-        question.style.border = 'none';
-        question.style.padding = '0';
-
-        if (selected) {
-          if (selected.value === correctAnswer) {
-            score++;
-            feedback += `✅ Pergunta ${key.replace('qu', '')} correta<br>`;
-            question.style.border = '2px solid green';
-            question.style.padding = '10px';
-          } else {
-            feedback += `❌ Pergunta ${key.replace('qu', '')} incorreta<br>`;
-            question.style.border = '2px solid red';
-            question.style.padding = '10px';
-          }
-        } else {
-          feedback += `❌ Pergunta ${key.replace('qu', '')} não respondida<br>`;
-        }
-      }
-
-      document.getElementById('case-study-quiz-result').innerHTML = `Você acertou ${score} de ${total} perguntas.<br>${feedback}`;
-    }
-
-    function resetCaseStudyQuiz() {
-      document.getElementById('case-study-quiz-form').reset();
-      document.getElementById('case-study-quiz-result').innerHTML = '';
-      const questions = document.querySelectorAll('.mb-3');
-      questions.forEach(question => {
-        question.style.border = 'none';
-        question.style.padding = '0';
-      });
-    }
-
-    function toggleSidebar() {
-      document.getElementById('sidebar').classList.toggle('show');
-    }
-
-// Quando o formulário for enviado, vamos gerar o PDF
-document.getElementById('certificadoForm').addEventListener('submit', function(e) {
-    e.preventDefault(); // Evita que o formulário recarregue a página
-
-    // Coleta o nome do usuário
-    var nome = document.getElementById('nome').value;
-
-    // Cria um novo documento PDF usando jsPDF
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF('landscape'); // Criando PDF em modo paisagem
-
-    // Caminho da imagem do certificado (certificado em branco em formato PNG)
-    const imagemCertificado = 'certificado.png';  // Substitua por seu caminho de imagem real
-
-    // Adicionando a imagem do certificado ao PDF
-    doc.addImage(imagemCertificado, 'PNG', 10, 10, 280, 200);  // Ajuste a posição e o tamanho conforme necessário
-
-    // Centralizando o nome do usuário
-    doc.setFontSize(30);
-    doc.text(nome, 150, 106, null, null, 'center'); // Nome do usuário centralizado no PDF
-
-    // Gerando o PDF como uma URL para abrir em uma nova aba
-    const pdfUrl = doc.output('bloburl'); // Cria uma URL para o PDF gerado
-
-    // Abrindo o PDF em uma nova aba
-    window.open(pdfUrl, '_blank');  // Abre o PDF em uma nova aba
-});
-
-  </script>
+</div>
+<script src="script.js"></script>
 </body>
 </html>
