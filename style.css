@@ -5,6 +5,10 @@ font-family: 'Arial', sans-serif;
 .geral{
     background-color: #fde7c8;
 }
+.image{
+    width:90%;
+}
+
 
 #sidebar {
 position: fixed;
