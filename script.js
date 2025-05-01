@@ -180,7 +180,7 @@ function checkFinalResult() {
       document.getElementById('encerramento').style.display = 'block';
   
       // Abre o modal do certificado usando Bootstrap
-      const certificadoModal = new bootstrap.Modal(document.getElementById('certificadoForm'));
+      const certificadoModal = new bootstrap.Modal(document.getElementById('certificadoModal'));
       certificadoModal.show();
     }
   }
