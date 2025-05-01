@@ -1,4 +1,48 @@
-  // Funções do primeiro quiz (Introdução)
+    document.getElementById("certificadoForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSeVPjylC48FwGo1LUUn9mBZxxOyddAbwCFG9QRX5XgdIQi02A/formResponse";
+      const formData = new FormData();
+
+      // Substitua pelos seus entry.X reais:
+      formData.append("entry.1556172680");
+  
+
+      fetch(formUrl, {
+        method: "POST",
+        mode: "no-cors", // Importante: evita erros de CORS
+        body: formData
+      });
+
+      alert("Enviado com sucesso (mesmo sem resposta do Google)!");
+      this.reset();
+    });
+
+document.getElementById("certificadoForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSeVPjylC48FwGo1LUUn9mBZxxOyddAbwCFG9QRX5XgdIQi02A/formResponse";
+    
+    const formData = new FormData();
+
+    // Substitua pelos seus entry.X reais:
+    formData.append("entry.1556172680", this.nome.value);
+    
+    fetch(formUrl, {
+      method: "POST",
+      mode: "no-cors", // Importante: evita erros de CORS
+      body: formData
+    });
+
+    alert("Enviado com sucesso (mesmo sem resposta do Google)!");
+    this.reset();
+  });
+
+
+
+
+
+// Funções do primeiro quiz (Introdução)
   function checkAnswer() {
     const answers = {
         q1: 'C',
