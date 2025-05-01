@@ -145,7 +145,7 @@ document.getElementById("certificadoForm").addEventListener("submit", function(e
     }
 
 // Quando o formulário for enviado, vamos gerar o PDF
-document.getElementById('certificadoForm').addEventListener('submit', function(e) {
+document.getElementById('certificadoModal').addEventListener('submit', function(e) {
     e.preventDefault(); // Evita que o formulário recarregue a página
 
     // Coleta o nome do usuário
