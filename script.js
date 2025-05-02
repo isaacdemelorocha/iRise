@@ -26,6 +26,11 @@ document.getElementById("certificadoForm").addEventListener("submit", function(e
   const pdfUrl = doc.output('bloburl');
   window.open(pdfUrl, '_blank');
 
+    // Fecha o modal
+  const modalElement = document.getElementById('certificadoModal');
+  const modalInstance = bootstrap.Modal.getInstance(modalElement);
+  modalInstance.hide();
+
   alert("Certificado gerado com sucesso!");
   this.reset();
 });
